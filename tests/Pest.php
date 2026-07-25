@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Iresis\LoginAudit\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);
+
+uses(RefreshDatabase::class)->in('Feature');

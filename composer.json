@@ -91,7 +91,10 @@
         "laravel": {
             "providers": [
                 "Iresis\\LoginAudit\\LoginAuditServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "LoginAudit": "Iresis\\LoginAudit\\Facades\\LoginAudit"
+            }
         }
     },
     "config": {

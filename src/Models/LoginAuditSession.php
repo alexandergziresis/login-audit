@@ -5,10 +5,29 @@ declare(strict_types=1);
 namespace Iresis\LoginAudit\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\MassPrunable;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property string|null $tenant_id
+ * @property string $authenticatable_type
+ * @property int|string $authenticatable_id
+ * @property string|null $guard
+ * @property string $session_id
+ * @property string|null $ip_address
+ * @property string|null $user_agent
+ * @property string|null $browser
+ * @property string|null $platform
+ * @property string|null $device_type
+ * @property string|null $device_hash
+ * @property Carbon|null $login_at
+ * @property Carbon|null $last_activity_at
+ * @property Carbon|null $logged_out_at
+ * @property-read Model|null $authenticatable
+ */
 class LoginAuditSession extends Model
 {
     use MassPrunable;

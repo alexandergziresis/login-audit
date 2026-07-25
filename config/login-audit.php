@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+use Iresis\LoginAudit\Models\LoginAuditLog;
+use Iresis\LoginAudit\Models\LoginAuditSession;
 
 return [
 
@@ -55,8 +57,8 @@ return [
     */
 
     'models' => [
-        'log' => \Iresis\LoginAudit\Models\LoginAuditLog::class,
-        'session' => \Iresis\LoginAudit\Models\LoginAuditSession::class,
+        'log' => LoginAuditLog::class,
+        'session' => LoginAuditSession::class,
     ],
 
     /*
