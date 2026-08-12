@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/iresis/login-audit/compare/1.0.0...HEAD)
+## [Unreleased](https://github.com/iresis/login-audit/compare/1.0.2...HEAD)
+
+## [1.0.2](https://github.com/iresis/login-audit/compare/1.0.0...1.0.2) - 2026-08-12
+
+Se guarda el logout
 
 ## [1.0.0](https://github.com/iresis/login-audit/compare/v0.1.0...1.0.0) - 2026-07-28
 
