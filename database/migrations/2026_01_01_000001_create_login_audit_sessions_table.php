@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::create($this->table(), function (Blueprint $table) {
             $table->id();
             $table->string('tenant_id')->nullable()->index();
-            $table->morphs('authenticatable');
+            $table->morphs('authenticatable', 'login_audit_sessions_authenticatable_index');
             $table->string('guard')->nullable();
             $table->string('session_id')->unique();
             $table->string('ip_address', 45)->nullable();

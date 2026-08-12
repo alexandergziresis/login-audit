@@ -40,6 +40,15 @@ it('creates the login_audit_sessions table with the expected columns', function 
         ]))->toBeTrue();
 });
 
+it('uses a MySQL-compatible name for the authenticatable index', function () {
+    $indexNames = collect(Schema::getIndexes('login_audit_sessions'))->pluck('name');
+
+    expect($indexNames)
+        ->toContain('login_audit_sessions_authenticatable_index')
+        ->and($indexNames->max(fn (string $name): int => strlen($name)))
+        ->toBeLessThanOrEqual(64);
+});
+
 it('associates the authenticatable morph relation', function () {
     $session = makeAuditSession($this->user, ['session_id' => 'sess-1']);
 
