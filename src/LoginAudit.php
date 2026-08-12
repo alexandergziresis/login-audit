@@ -18,6 +18,8 @@ use Iresis\LoginAudit\Support\DeviceSummary;
 
 class LoginAudit
 {
+    private const string AUDIT_SESSION_ID_KEY = 'login-audit.session_id';
+
     public function recordLogin(Authenticatable $user, string $guard): void
     {
         if (! $this->shouldRecord('login')) {
@@ -35,7 +37,7 @@ class LoginAudit
         }
 
         $this->log('logout', $guard, $user);
-        $this->closeCurrentSession();
+        $this->closeCurrentSession($user, $guard);
     }
 
     /**
@@ -193,20 +195,32 @@ class LoginAudit
                 'logged_out_at' => null,
             ],
         );
+
+        $request->session()->put(self::AUDIT_SESSION_ID_KEY, $sessionId);
     }
 
-    private function closeCurrentSession(): void
+    private function closeCurrentSession(Authenticatable $user, string $guard): void
     {
-        $sessionId = $this->currentSessionId();
+        $request = $this->request();
 
-        if ($sessionId === null) {
+        if (! $request->hasSession()) {
             return;
         }
 
-        $this->sessionModel()::query()
-            ->where('session_id', $sessionId)
+        $session = $request->session();
+        $rememberedSessionId = $session->get(self::AUDIT_SESSION_ID_KEY);
+        $sessionIds = array_values(array_unique(array_filter([
+            $session->getId(),
+            is_string($rememberedSessionId) ? $rememberedSessionId : null,
+        ])));
+
+        $this->sessionsQuery($user)
+            ->where('guard', $guard)
+            ->whereIn('session_id', $sessionIds)
             ->whereNull('logged_out_at')
             ->update(['logged_out_at' => now()]);
+
+        $session->forget(self::AUDIT_SESSION_ID_KEY);
     }
 
     private function closeOtherSessions(Authenticatable $user): void

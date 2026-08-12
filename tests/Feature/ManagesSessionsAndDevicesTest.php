@@ -64,6 +64,22 @@ it('closes the session row on logout', function () {
     expect($session->logged_out_at)->not->toBeNull();
 });
 
+it('closes the session row when the framework session id changes before logout', function () {
+    bindAuditedRequest();
+    $user = User::factory()->create();
+
+    Auth::login($user);
+    $auditSession = LoginAuditSession::query()->sole();
+
+    session()->regenerate();
+
+    expect(session()->getId())->not->toBe($auditSession->session_id);
+
+    Auth::logout();
+
+    expect($auditSession->fresh()->logged_out_at)->not->toBeNull();
+});
+
 it('closes other sessions but keeps the current one on other device logout', function () {
     bindAuditedRequest();
     $user = User::factory()->create();
